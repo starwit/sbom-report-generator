@@ -14,7 +14,9 @@ import org.cyclonedx.parsers.BomParserFactory;
 import org.cyclonedx.parsers.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class JSONParser {
 
     static final Logger log = LoggerFactory.getLogger(JSONParser.class);
@@ -48,5 +50,9 @@ public class JSONParser {
         }
 
         return bom;
+    }
+
+    public Bom parseJsonToBOM(String json) {
+        return parseBomFromBytes(json.getBytes());
     }
 }

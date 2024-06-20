@@ -3,6 +3,8 @@ package de.starwit.sbom.generator;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
 
 import org.cyclonedx.model.Bom;
 import org.cyclonedx.model.Component;
@@ -11,6 +13,7 @@ import org.cyclonedx.model.LicenseChoice;
 import org.cyclonedx.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Chunk;
@@ -27,17 +30,39 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+@Service
 public class ReportGenerator {
 
     static final Logger log = LoggerFactory.getLogger(ReportGenerator.class);
 
-    public Document renderPDF(Bom bom, DocumentConfiguration dc) {
-        String reportFilename = "report.pdf";
+    public void renderPDF(List<Bom> boms, DocumentDesignConfig dc, OutputStream out) {
+
         Document document = new Document(PageSize.A4);      
         Font baseFont = FontFactory.getFont(FontFactory.HELVETICA, dc.getBaseFontSize());
 
         try {
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(reportFilename));
+            PdfWriter writer = PdfWriter.getInstance(document, out);
+            for(Bom bom: boms) {
+                document.open();
+                addHeader(document, dc.getTitle());
+                document.add(addMetadata(bom, document, baseFont)); 
+                document.newPage();
+                document.add(buildComponentTable(bom, document, baseFont));
+                document.newPage();
+            }
+            document.close();
+            writer.close();
+        } catch (DocumentException e) {
+            log.info("Can't write document " + e.getMessage());
+        } 
+    }
+
+    public void renderPDF(Bom bom, DocumentDesignConfig dc, OutputStream out) {
+        Document document = new Document(PageSize.A4);      
+        Font baseFont = FontFactory.getFont(FontFactory.HELVETICA, dc.getBaseFontSize());
+        
+        try {
+            PdfWriter writer = PdfWriter.getInstance(document, out);
             document.open();
             addHeader(document, dc.getTitle());
             document.add(addMetadata(bom, document, baseFont)); 
@@ -46,11 +71,7 @@ public class ReportGenerator {
             document.close();
         } catch (DocumentException e) {
             log.info("Can't write document " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            log.info("Can't write to file " + e.getMessage());
-        }
-
-        return document;        
+        }        
     }
 
     private void addHeader(Document document,String title) {
@@ -139,9 +160,15 @@ public class ReportGenerator {
             StringBuffer sb = new StringBuffer();
             if(c.getLicenses() != null) {
                 LicenseChoice lc = c.getLicenses();
-                for (License l : lc.getLicenses()) {
-                    sb.append(l.getId());
+                if (lc.getLicenses() != null) {
+                    for (License l : lc.getLicenses()) {
+                        sb.append(l.getId());
+                    }
                 }
+                if(lc.getExpression() != null) {
+                    sb.append(lc.getExpression().getValue());
+                }
+
                 table.addCell(new Phrase(sb.toString(), font));
             } else {
                 table.addCell(new Phrase("no license", font));

@@ -1,6 +1,6 @@
 package de.starwit.sbom.generator;
 
-public class DocumentConfiguration {
+public class DocumentDesignConfig {
     String title;
     String logoPath;
     int baseFontSize;
