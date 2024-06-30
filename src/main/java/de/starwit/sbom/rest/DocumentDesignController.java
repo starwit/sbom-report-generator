@@ -26,7 +26,7 @@ public class DocumentDesignController {
     DocumentDesignConfigService configService;
 
     @Operation(summary = "Get all document design configs")
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<DocumentDesignConfig>> getAllDesignConfig() {
         return ResponseEntity.ok(configService.getDocumentDesignConfigs());
     }

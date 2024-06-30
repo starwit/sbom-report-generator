@@ -21,6 +21,12 @@ public class DocumentDesignConfigService {
         dc.setTitle("Starwit's AI Cockpit");
         dc.setLogoPath("starwit.png");
         documentDesignConfigs.add(dc);
+
+        dc =  new DocumentDesignConfig();
+        dc.setBaseFontSize(12);
+        dc.setTitle("Starwit's AI Cockpit II - Starwit strikes back!");
+        dc.setLogoPath("starwit.png"); 
+        documentDesignConfigs.add(dc);
     }
 
     public List<DocumentDesignConfig> getDocumentDesignConfigs() {
