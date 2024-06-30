@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.context.annotation.ApplicationScope;
 
 import de.starwit.sbom.generator.DocumentDesignConfig;
+import de.starwit.sbom.service.DocumentHistory;
 
 @SpringBootApplication
 public class SBomGeneratorApplication {
@@ -22,5 +23,11 @@ public class SBomGeneratorApplication {
 	public List<DocumentDesignConfig> getDocumentDesignConfigs() {
 		return new ArrayList<DocumentDesignConfig>();
 	}
+
+	@Bean(name = "documentHistory")
+	@ApplicationScope
+	public List<DocumentHistory> getDocumentHistory() {
+		return new ArrayList<DocumentHistory>();
+	}	
 
 }

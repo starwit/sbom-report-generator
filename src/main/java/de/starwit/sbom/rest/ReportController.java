@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.starwit.sbom.service.DocumentGeneratorService;
+import de.starwit.sbom.service.DocumentHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +28,9 @@ public class ReportController {
 
     @Autowired
     DocumentGeneratorService dgs;
+
+    @Autowired
+    DocumentHistoryService dhs;
     
     @Operation(summary = "Generate PDF report based on CycloneDX definition")
     @PostMapping("/{dcId}")
@@ -37,6 +41,7 @@ public class ReportController {
 
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=pdf_sbom_" + currentDateTime + ".pdf";
+        dhs.addDocumentHistory("filename=pdf_sbom_" + currentDateTime + ".pdf");
         response.setHeader(headerKey, headerValue);        
         ServletOutputStream out;
         try {
