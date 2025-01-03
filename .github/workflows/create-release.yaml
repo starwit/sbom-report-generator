@@ -12,6 +12,11 @@ on:
 permissions:
   contents: write
 
+env:
+  IMAGE_NAME: sbom-generator
+  DOCKERHUB_USERNAME: starwit
+  DOCKERHUB_ORG: starwitorg  
+
 jobs:
   build:
     name: "Creating maven and github release"
@@ -115,6 +120,7 @@ jobs:
 
   publish_helm:
     name: "Publish helm chart"
+    needs: build    
     runs-on: [self-hosted, linux, X64]
 
     steps:
