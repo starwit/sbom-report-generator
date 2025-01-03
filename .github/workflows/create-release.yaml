@@ -125,16 +125,18 @@ jobs:
 
     - name: login to Helm registry
       run: helm registry login registry-1.docker.io -u starwit -p ${{ secrets.DOCKERHUB_TOKEN }}
+
     - name: run helm update
-      working-directory: deployment/helm/sbom-generator
+      working-directory: target/helm/sbom-generator
       run: helm dep update
+
     - name: run helm package
-      working-directory: deployment/helm
+      working-directory: target/helm
       run: helm package sbom-generator
     - name: get version number
-      working-directory: deployment/helm/sbom-generator
+      working-directory: target/helm/sbom-generator
       run: |
         echo "HELM_VERSION=$(grep version: Chart.yaml | head -1 | awk '{print $2}')" >> $GITHUB_ENV
     - name: run helm push
-      working-directory: deployment/helm
+      working-directory: target/helm
       run: helm push sbom-generator-chart-${{ env.HELM_VERSION }}.tgz oci://registry-1.docker.io/starwitorg
