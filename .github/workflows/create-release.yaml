@@ -21,6 +21,8 @@ jobs:
   build:
     name: "Creating maven and github release"
     runs-on: [self-hosted, linux, X64]
+    outputs:
+      VERSION_BUILD: ${{ steps.get-version.outputs.VERSION_BUILD }}     
     
     steps:
     - name: Install GH CLI
@@ -131,6 +133,10 @@ jobs:
 
     - name: login to Helm registry
       run: helm registry login registry-1.docker.io -u starwit -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: debug
+      run: |
+        find .
 
     - name: run helm update
       working-directory: target/helm/sbom-generator
