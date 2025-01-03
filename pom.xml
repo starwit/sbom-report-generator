@@ -4,14 +4,14 @@
 
 	<groupId>de.starwit</groupId>
 	<artifactId>sBOM-generator</artifactId>
-	<version>0.0.7</version>
+	<version>0.0.8-SNAPSHOT</version>
 	<name>sBOM-generator</name>
 	<description>A PDF generator for CycloneDX sBOM</description>
 	<url>http://starwit.de</url>
 
 	<scm>
 		<connection>scm:git:https://github.com/starwit/sbom-report-generator.git</connection>
-		<tag>0.0.7</tag>
+		<tag>0.0.1</tag>
 	</scm>
 
 	<properties>
