@@ -4,7 +4,7 @@
 
 	<groupId>de.starwit</groupId>
 	<artifactId>sBOM-generator</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<name>sBOM-generator</name>
 	<description>A PDF generator for CycloneDX sBOM</description>
 	<url>http://starwit.de</url>
