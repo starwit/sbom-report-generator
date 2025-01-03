@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: starwitorg/sbom-generator
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ${project.version}
+
+app:
+  context_path: ""
+
+service:
+  port: 8080
+
+# extraEnv: |
+#   - name: JAVA_TOOL_OPTIONS
+#     value: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5000
+#   - name: LOGGING_LEVEL_ROOT
+#     value: DEBUG
+
+autoscaling:
+  enabled: false

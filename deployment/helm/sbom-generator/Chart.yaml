@@ -1,0 +1,9 @@
+apiVersion: v2
+name: sbom-generator-chart
+description: A Helm chart to deploy SBOM PDF Generator to Kubernetes
+
+type: application
+
+version: ${project.version}
+
+appVersion: ${project.version}
