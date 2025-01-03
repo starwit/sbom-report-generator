@@ -13,6 +13,7 @@ permissions:
   contents: write
 
 env:
+  RELEASE_VERSION: ${{ github.event.inputs.release-version }}
   IMAGE_NAME: sbom-generator
   DOCKERHUB_USERNAME: starwit
   DOCKERHUB_ORG: starwitorg  
@@ -126,10 +127,8 @@ jobs:
     runs-on: [self-hosted, linux, X64]
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
     - name: get helm
-      uses: azure/setup-helm@v3  
+      uses: azure/setup-helm@v4
 
     - name: login to Helm registry
       run: helm registry login registry-1.docker.io -u starwit -p ${{ secrets.DOCKERHUB_TOKEN }}
