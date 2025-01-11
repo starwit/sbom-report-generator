@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import de.starwit.sbom.generator.DocumentDesignConfig;
 import de.starwit.sbom.generator.ReportGenerator;
-import de.starwit.sbom.parser.JSONParser;
 
 @Service
 public class DocumentGeneratorService {

@@ -1,4 +1,4 @@
-package de.starwit.sbom.parser;
+package de.starwit.sbom.service;
 
 import java.io.File;
 import java.io.IOException;
