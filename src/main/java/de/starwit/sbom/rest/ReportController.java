@@ -38,8 +38,12 @@ public class ReportController {
     private RestTemplate restTemplate;    
     
     @Operation(summary = "Generate PDF report based on provided CycloneDX definition")
-    @PostMapping("/{dcId}")
-    public void getReport(HttpServletResponse response, @RequestBody String json, @PathVariable("dcId") int dcId) {
+    @PostMapping("/{dcId}/{compact}")
+    public void getReport(HttpServletResponse response, @RequestBody String json, @PathVariable("dcId") int dcId, @PathVariable("compact") boolean compact) {
+        ReportRequestDTO dto = new ReportRequestDTO();
+        dto.setCompact(compact);
+        dto.setDcId(dcId);
+        dto.setSbom(json);
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -51,7 +55,7 @@ public class ReportController {
         ServletOutputStream out;
         try {
             out = response.getOutputStream();
-            dgs.generateReport(json, dcId, out);
+            dgs.generateReport(dto, out);
         } catch (IOException e) {
             log.error("Can't create output stream for pdf");
             //TODO send 500 response code
@@ -64,6 +68,7 @@ public class ReportController {
 
         String json = loadCycloneDXData(reportData.getSbomURI());
         if(!json.equals("")) {
+            reportData.setSbom(json);
             response.setContentType("application/pdf");
             DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
             String currentDateTime = dateFormatter.format(new Date());
@@ -74,7 +79,7 @@ public class ReportController {
             ServletOutputStream out;
             try {
                 out = response.getOutputStream();
-                dgs.generateReport(json, reportData.getDcId(), out);
+                dgs.generateReport(reportData, out);
             } catch (IOException e) {
                 log.error("Can't create output stream for pdf");
                 response.setStatus(500);

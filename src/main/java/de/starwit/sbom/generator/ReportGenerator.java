@@ -47,7 +47,7 @@ public class ReportGenerator {
                 addHeader(document, dc.getTitle());
                 document.add(addMetadata(bom, document, baseFont)); 
                 document.newPage();
-                document.add(buildComponentTable(bom, document, baseFont));
+                document.add(buildComponentTable(bom, document, baseFont, dc.isCompact()));
                 document.newPage();
             }
             document.close();
@@ -67,7 +67,7 @@ public class ReportGenerator {
             addHeader(document, dc.getTitle());
             document.add(addMetadata(bom, document, baseFont)); 
             document.newPage();
-            document.add(buildComponentTable(bom, document, baseFont));
+            document.add(buildComponentTable(bom, document, baseFont, dc.isCompact()));
             document.close();
         } catch (DocumentException e) {
             log.info("Can't write document " + e.getMessage());
@@ -122,11 +122,16 @@ public class ReportGenerator {
         return table;
     }
 
-    private PdfPTable buildComponentTable(Bom bom, Document document, Font font) {
+    private PdfPTable buildComponentTable(Bom bom, Document document, Font font, boolean isCompact) {
         float width = document.getPageSize().getWidth();
         document.open();
 
-        PdfPTable table = new PdfPTable(6);
+        PdfPTable table;
+        if(isCompact) {
+            table = new PdfPTable(5);
+        } else {
+            table = new PdfPTable(6);
+        }
         table.getDefaultCell().setBorder(1);
         table.setHorizontalAlignment(0);
         table.setTotalWidth(width - 72);
@@ -141,7 +146,9 @@ public class ReportGenerator {
         table.addCell(new Phrase("Version", font));
         table.addCell(new Phrase("License", font));
         table.addCell(new Phrase("Type", font));
-        table.addCell(new Phrase("Description", font));
+        if(!isCompact) {
+            table.addCell(new Phrase("Description", font));
+        }
 
         for (Component c : bom.getComponents()) {
             table.addCell(new Phrase(c.getName(), font));
@@ -185,11 +192,13 @@ public class ReportGenerator {
             } else {
                 table.addCell(new Phrase("", font));
             }
-
-            if(c.getDescription() != null) {
-                table.addCell(new Phrase(c.getDescription(), FontFactory.getFont(FontFactory.HELVETICA, font.getSize()-2)));
-            } else {
-                table.addCell(new Phrase("", font));
+            
+            if(!isCompact) {
+                if(c.getDescription() != null) {
+                    table.addCell(new Phrase(c.getDescription(), FontFactory.getFont(FontFactory.HELVETICA, font.getSize()-2)));
+                } else {
+                    table.addCell(new Phrase("", font));
+                }
             }
             
         }

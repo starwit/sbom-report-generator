@@ -4,7 +4,14 @@ public class DocumentDesignConfig {
     String title;
     String logoPath;
     int baseFontSize;
+    boolean compact = false;
 
+    public boolean isCompact() {
+        return compact;
+    }
+    public void setCompact(boolean compact) {
+        this.compact = compact;
+    }
     public String getTitle() {
         return title;
     }
