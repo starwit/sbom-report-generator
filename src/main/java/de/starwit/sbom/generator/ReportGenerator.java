@@ -124,21 +124,21 @@ public class ReportGenerator {
 
     private PdfPTable buildComponentTable(Bom bom, Document document, Font font) {
         float width = document.getPageSize().getWidth();
-        float height = document.getPageSize().getHeight();
         document.open();
 
-        PdfPTable table = new PdfPTable(5);
+        PdfPTable table = new PdfPTable(6);
         table.getDefaultCell().setBorder(1);
         table.setHorizontalAlignment(0);
         table.setTotalWidth(width - 72);
         table.setLockedWidth(true);
 
         PdfPCell cell = new PdfPCell(new Phrase("List of Components"));
-        cell.setColspan(5);
+        cell.setColspan(6);
         table.addCell(cell);
 
         table.addCell(new Phrase("Name", font));
         table.addCell(new Phrase("Author", font));
+        table.addCell(new Phrase("Version", font));
         table.addCell(new Phrase("License", font));
         table.addCell(new Phrase("Type", font));
         table.addCell(new Phrase("Description", font));
@@ -156,6 +156,12 @@ public class ReportGenerator {
                 author = c.getAuthor();
             }            
             table.addCell(new Phrase(publisher + " " + author, font));
+
+            String version = "";
+            if (c.getVersion() != null) {
+                version = c.getVersion();
+            }            
+            table.addCell(new Phrase(version, font));            
 
             StringBuffer sb = new StringBuffer();
             if(c.getLicenses() != null) {
