@@ -16,10 +16,6 @@ jobs:
       VERSION_BUILD: ${{ steps.get-version.outputs.VERSION_BUILD }}    
 
     steps:
-    - name: install fonts
-      run: |
-        apt install -y fontconfig ttf-dejavu      
-        
     - name: checkout
       uses: actions/checkout@v4    
   
