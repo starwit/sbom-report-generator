@@ -1,10 +1,9 @@
 package de.starwit.sbom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
+import de.starwit.sbom.generator.SpreadSheetGenerator;
 import de.starwit.sbom.service.JSONParser;
 
 @SpringBootTest
@@ -56,4 +56,15 @@ class SBomGeneratorApplicationTests {
 		assertEquals(createdTimeStamp, sdf.parse(validationTimeString));		
     }
 
+	@Test
+	public void generateSpreadSheetTest() throws Exception {
+		ClassPathResource sbomFile = new ClassPathResource("sbom-backend.json");
+        byte[] binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());
+        String strJson = new String(binaryData, StandardCharsets.UTF_8);
+		JSONParser jp = new JSONParser();
+		Bom bom = jp.parseJsonToBOM(strJson);
+
+		SpreadSheetGenerator ssg =  new SpreadSheetGenerator();
+		ssg.createSpreadSheetReport(bom, new FileOutputStream("report.xls"));
+	}
 }

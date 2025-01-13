@@ -90,6 +90,32 @@ public class ReportController {
         }
     }
 
+    @Operation(summary = "Generate Excel report based on CycloneDX definition provided as URI")
+    @PostMapping("/excel/remote")
+    public void generateExcel(HttpServletResponse response, @RequestBody ReportRequestDTO reportData) {
+        String json = loadCycloneDXData(reportData.getSbomURI());
+        if(!json.equals("")) {
+            reportData.setSbom(json);
+            response.setContentType("application/vnd.ms-excel");
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=excel_sbom_" + currentDateTime + ".xls";            
+            response.setHeader(headerKey, headerValue);        
+            ServletOutputStream out;
+            try {
+                out = response.getOutputStream();
+                dgs.createSpreadSheetReport(reportData, out);
+            } catch (IOException e) {
+                log.error("Can't create output stream for pdf");
+                response.setStatus(500);
+            }
+        } else {
+            log.error("Can't load CycloneDX data from remote URI");
+            response.setStatus(404);
+        }
+    }    
+
     private String loadCycloneDXData(String sbomURI) {
         
         try {
