@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.starwit.sbom.generator.DocumentDesignConfig;
-import de.starwit.sbom.generator.ReportGenerator;
+import de.starwit.sbom.generator.PDFReportGenerator;
+import de.starwit.sbom.generator.SpreadSheetGenerator;
 import de.starwit.sbom.rest.ReportRequestDTO;
+import jakarta.servlet.ServletOutputStream;
 
 @Service
 public class DocumentGeneratorService {
@@ -20,7 +22,10 @@ public class DocumentGeneratorService {
     JSONParser jsonParser;
 
     @Autowired
-    ReportGenerator reportGenerator;
+    PDFReportGenerator reportGenerator;
+
+    @Autowired
+    SpreadSheetGenerator sheetGenerator;
 
     @Autowired
     DocumentDesignConfigService configService;
@@ -31,5 +36,11 @@ public class DocumentGeneratorService {
         dc.setCompact(dto.isCompact());
         reportGenerator.renderPDF(bom, dc, out);        
     }
+
+    public void createSpreadSheetReport(ReportRequestDTO reportData, ServletOutputStream out) {
+        JSONParser jp = new JSONParser();
+        Bom bom = jp.parseJsonToBOM(reportData.getSbom());
+        sheetGenerator.createSpreadSheetReport(bom, out);
+    }     
     
 }

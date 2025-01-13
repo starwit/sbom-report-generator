@@ -31,9 +31,9 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 @Service
-public class ReportGenerator {
+public class PDFReportGenerator {
 
-    static final Logger log = LoggerFactory.getLogger(ReportGenerator.class);
+    static final Logger log = LoggerFactory.getLogger(PDFReportGenerator.class);
 
     public void renderPDF(List<Bom> boms, DocumentDesignConfig dc, OutputStream out) {
 
