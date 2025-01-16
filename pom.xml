@@ -126,11 +126,7 @@
 							<goal>sign</goal>
 						</goals>
 						<configuration>
-							<keyname>0x54841DEC</keyname>
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
+							<signer>bc</signer>
 						</configuration>
 					</execution>
 				</executions>
