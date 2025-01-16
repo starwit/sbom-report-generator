@@ -8,6 +8,13 @@
 	<name>sBOM-generator</name>
 	<description>A PDF generator for CycloneDX sBOM</description>
 	<url>http://starwit.de</url>
+    <licenses>
+        <license>
+            <name>AGPLv3</name>
+            <url>https://github.com/starwit/sbom-report-generator/blob/main/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>	
 
 	<scm>
 		<connection>scm:git:https://github.com/starwit/sbom-report-generator.git</connection>
@@ -119,11 +126,7 @@
 							<goal>sign</goal>
 						</goals>
 						<configuration>
-							<keyname>0x54841DEC</keyname>
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
+							<signer>bc</signer>
 						</configuration>
 					</execution>
 				</executions>

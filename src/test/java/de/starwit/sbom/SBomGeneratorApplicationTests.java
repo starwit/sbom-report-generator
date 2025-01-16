@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
+import de.starwit.sbom.generator.DocumentDesignConfig;
+import de.starwit.sbom.generator.PDFReportGenerator;
 import de.starwit.sbom.generator.SpreadSheetGenerator;
 import de.starwit.sbom.service.JSONParser;
 
@@ -66,5 +68,39 @@ class SBomGeneratorApplicationTests {
 
 		SpreadSheetGenerator ssg =  new SpreadSheetGenerator();
 		ssg.createSpreadSheetReport(bom, new FileOutputStream("report.xls"));
+
+		sbomFile = new ClassPathResource("aic-sbom-backend.json");
+        binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());
+        strJson = new String(binaryData, StandardCharsets.UTF_8);
+		jp = new JSONParser();
+		bom = jp.parseJsonToBOM(strJson);
+
+		ssg.createSpreadSheetReport(bom, new FileOutputStream("report2.xls"));		
 	}
+
+	@Test
+	public void generatePDFTest() throws Exception {
+
+		DocumentDesignConfig dc = new DocumentDesignConfig();
+		dc.setBaseFontSize(10);
+        dc.setTitle("Starwit's AI Cockpit");
+        dc.setLogoPath("starwit.png");
+
+		ClassPathResource sbomFile = new ClassPathResource("sbom-backend.json");
+        byte[] binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());
+        String strJson = new String(binaryData, StandardCharsets.UTF_8);
+		JSONParser jp = new JSONParser();
+		Bom bom = jp.parseJsonToBOM(strJson);
+
+		PDFReportGenerator pdf = new PDFReportGenerator();
+		pdf.renderPDF(bom, dc, new FileOutputStream("report.pdf"));
+
+		sbomFile = new ClassPathResource("aic-sbom-backend.json");
+        binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());
+        strJson = new String(binaryData, StandardCharsets.UTF_8);
+		jp = new JSONParser();
+		bom = jp.parseJsonToBOM(strJson);
+
+		pdf.renderPDF(bom, dc, new FileOutputStream("report2.pdf"));
+	}	
 }

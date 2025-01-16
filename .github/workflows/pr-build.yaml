@@ -28,7 +28,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: '0'
+        fetch-depth: '0'         
 
     - name: Build with Maven
       run: mvn clean -B package --file pom.xml

@@ -58,16 +58,7 @@ public class SpreadSheetGenerator {
         addDataItem("Component ID", md.getComponent().getGroup(), sheet, 3);
         addDataItem("Version", md.getComponent().getVersion(), sheet, 4);
         addDataItem("Description", md.getComponent().getDescription(), sheet, 5);
-        StringBuffer sb = new StringBuffer();
-        if(md.getComponent().getLicenses() != null) {
-            LicenseChoice lc = md.getComponent().getLicenses();
-            for (License l : lc.getLicenses()) {
-                sb.append(l.getId());
-            }
-            addDataItem("License", sb.toString(), sheet, 6);
-        } else {
-            addDataItem("License", "no license", sheet, 6);
-        }
+        addDataItem("License", CycloneTools.getLicenseName(md.getComponent().getLicenses()), sheet, 6);
         
         // Components
         

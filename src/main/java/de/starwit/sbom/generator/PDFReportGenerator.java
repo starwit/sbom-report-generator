@@ -108,16 +108,7 @@ public class PDFReportGenerator {
         table.addCell(new Phrase("Description", font));
         table.addCell(new Phrase(c.getDescription()+"", font));
         table.addCell(new Phrase("License", font));
-        StringBuffer sb = new StringBuffer();
-        if(c.getLicenses() != null) {
-            LicenseChoice lc = c.getLicenses();
-            for (License l : lc.getLicenses()) {
-                sb.append(l.getId());
-            }
-            table.addCell(new Phrase(sb.toString(), font));
-        } else {
-            table.addCell(new Phrase("no license", font));
-        }
+        table.addCell(new Phrase(CycloneTools.getLicenseName(c.getLicenses()), font));
         
         return table;
     }
