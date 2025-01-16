@@ -66,5 +66,13 @@ class SBomGeneratorApplicationTests {
 
 		SpreadSheetGenerator ssg =  new SpreadSheetGenerator();
 		ssg.createSpreadSheetReport(bom, new FileOutputStream("report.xls"));
+
+		sbomFile = new ClassPathResource("aic-sbom-backend.json");
+        binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());
+        strJson = new String(binaryData, StandardCharsets.UTF_8);
+		jp = new JSONParser();
+		bom = jp.parseJsonToBOM(strJson);
+
+		ssg.createSpreadSheetReport(bom, new FileOutputStream("report2.xls"));		
 	}
 }
