@@ -30,20 +30,26 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import de.starwit.sbom.rest.ReportRequestDTO;
+import de.starwit.sbom.service.JSONParser;
+
 @Service
 public class PDFReportGenerator {
 
     static final Logger log = LoggerFactory.getLogger(PDFReportGenerator.class);
 
-    public void renderPDF(List<Bom> boms, DocumentDesignConfig dc, OutputStream out) {
+    public void createPDFReport(ReportRequestDTO dto, DocumentDesignConfig dc, OutputStream out) {
+
+        JSONParser jp = new JSONParser();
+        List<Bom> boms = jp.parseJsonToBOM(dto.getSbom());
 
         Document document = new Document(PageSize.A4);      
         Font baseFont = FontFactory.getFont(FontFactory.HELVETICA, dc.getBaseFontSize());
 
         try {
             PdfWriter writer = PdfWriter.getInstance(document, out);
+            document.open();
             for(Bom bom: boms) {
-                document.open();
                 addHeader(document, dc.getTitle());
                 document.add(addMetadata(bom, document, baseFont)); 
                 document.newPage();

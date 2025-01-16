@@ -13,6 +13,8 @@ As this is a Spring Boot app, compiling and running is simple:
     java -jar target/application-sbom-generator.jar 
 ```
 
+__Note__: Build file contains a code signing step. Make sure to change config to your own signing key. For more details see [plugin page](https://maven.apache.org/plugins/maven-gpg-plugin/usage.html)
+
 You can reach API via:
 
     http://localhost:8080/swagger-ui/index.html

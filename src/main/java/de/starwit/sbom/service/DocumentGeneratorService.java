@@ -31,16 +31,14 @@ public class DocumentGeneratorService {
     DocumentDesignConfigService configService;
 
     public void generateReport(ReportRequestDTO dto, OutputStream out) {
-        Bom bom = jsonParser.parseJsonToBOM(dto.getSbom());
+
         DocumentDesignConfig dc = configService.getDocumentDesignConfig(dto.getDcId());
         dc.setCompact(dto.isCompact());
-        reportGenerator.renderPDF(bom, dc, out);        
+        reportGenerator.createPDFReport(dto, dc, out);        
     }
 
     public void createSpreadSheetReport(ReportRequestDTO reportData, ServletOutputStream out) {
-        JSONParser jp = new JSONParser();
-        Bom bom = jp.parseJsonToBOM(reportData.getSbom());
-        sheetGenerator.createSpreadSheetReport(bom, out);
+        sheetGenerator.createSpreadSheetReport(reportData, out);
     }     
     
 }

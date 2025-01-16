@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.cyclonedx.model.Bom;
@@ -18,7 +19,9 @@ import org.springframework.util.FileCopyUtils;
 import de.starwit.sbom.generator.DocumentDesignConfig;
 import de.starwit.sbom.generator.PDFReportGenerator;
 import de.starwit.sbom.generator.SpreadSheetGenerator;
+import de.starwit.sbom.rest.ReportRequestDTO;
 import de.starwit.sbom.service.JSONParser;
+import java.util.ArrayList;
 
 @SpringBootTest
 class SBomGeneratorApplicationTests {
@@ -62,21 +65,41 @@ class SBomGeneratorApplicationTests {
 	public void generateSpreadSheetTest() throws Exception {
 		ClassPathResource sbomFile = new ClassPathResource("sbom-backend.json");
         byte[] binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());
-        String strJson = new String(binaryData, StandardCharsets.UTF_8);
-		JSONParser jp = new JSONParser();
-		Bom bom = jp.parseJsonToBOM(strJson);
+		List<String> jsons = new ArrayList<>();
+		jsons.add(new String(binaryData, StandardCharsets.UTF_8));
+		ReportRequestDTO dto = new ReportRequestDTO();
+		dto.setSbom(jsons);
 
 		SpreadSheetGenerator ssg =  new SpreadSheetGenerator();
-		ssg.createSpreadSheetReport(bom, new FileOutputStream("report.xls"));
+		ssg.createSpreadSheetReport(dto, new FileOutputStream("report.xls"));
 
 		sbomFile = new ClassPathResource("aic-sbom-backend.json");
         binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());
-        strJson = new String(binaryData, StandardCharsets.UTF_8);
-		jp = new JSONParser();
-		bom = jp.parseJsonToBOM(strJson);
+		jsons = new ArrayList<>();
+		jsons.add(new String(binaryData, StandardCharsets.UTF_8));
+		dto = new ReportRequestDTO();
+		dto.setSbom(jsons);
 
-		ssg.createSpreadSheetReport(bom, new FileOutputStream("report2.xls"));		
+		ssg.createSpreadSheetReport(dto, new FileOutputStream("report2.xls"));		
 	}
+
+	@Test
+	public void generateMultipleSpreadSheetTest() throws Exception {
+		ClassPathResource sbomFile = new ClassPathResource("sbom-backend.json");
+        byte[] binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());		
+		List<String> jsons = new ArrayList<>();
+		jsons.add(new String(binaryData, StandardCharsets.UTF_8));
+		
+		sbomFile = new ClassPathResource("aic-sbom-backend.json");
+        binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());
+		jsons.add(new String(binaryData, StandardCharsets.UTF_8));
+		
+		ReportRequestDTO dto = new ReportRequestDTO();
+		dto.setSbom(jsons);
+
+		SpreadSheetGenerator ssg =  new SpreadSheetGenerator();
+		ssg.createSpreadSheetReport(dto, new FileOutputStream("report-multi.xls"));		
+	}	
 
 	@Test
 	public void generatePDFTest() throws Exception {
