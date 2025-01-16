@@ -28,16 +28,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: '0'
-
-    - name: Debug
-      run: |
-        echo "Key to sign"
-        echo ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-      env:
-        CI: false
-        MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-        MAVEN_GPG_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}          
+        fetch-depth: '0'         
 
     - name: Build with Maven
       run: mvn clean -B package --file pom.xml
