@@ -85,7 +85,7 @@ class SBomGeneratorApplicationTests {
 
 	@Test
 	public void generateMultipleSpreadSheetTest() throws Exception {
-		ClassPathResource sbomFile = new ClassPathResource("sbom-backend.json");
+		ClassPathResource sbomFile = new ClassPathResource("aic-sbom-frontend.json");
         byte[] binaryData = FileCopyUtils.copyToByteArray(sbomFile.getInputStream());		
 		List<String> jsons = new ArrayList<>();
 		jsons.add(new String(binaryData, StandardCharsets.UTF_8));

@@ -63,7 +63,12 @@ public class SpreadSheetGenerator {
         cell.setCellValue("Software Bill of Material");
         cell.setCellStyle(headerStyle);
 
-        addDataItem("Creation Date", md.getTimestamp().toString(), sheet, 2);
+        if(md.getTimestamp() != null) {
+            addDataItem("Creation Date", md.getTimestamp().toString(), sheet, 2);
+        } else {
+            addDataItem("Creation Date", "unknown", sheet, 2);
+        }
+        
         addDataItem("Component ID", md.getComponent().getGroup(), sheet, 3);
         addDataItem("Version", md.getComponent().getVersion(), sheet, 4);
         addDataItem("Description", md.getComponent().getDescription(), sheet, 5);
