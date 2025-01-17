@@ -52,6 +52,14 @@ public class JSONParser {
         return bom;
     }
 
+    public List<Bom> parseJsonToBOM(List<String> json) {
+        List<Bom> boms = new ArrayList<>();
+        for (String sbom : json) {
+            boms.add(parseJsonToBOM(sbom));
+        }
+        return boms;
+    }
+
     public Bom parseJsonToBOM(String json) {
         return parseBomFromBytes(json.getBytes());
     }

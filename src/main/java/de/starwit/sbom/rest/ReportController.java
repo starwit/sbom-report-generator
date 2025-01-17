@@ -3,7 +3,9 @@ package de.starwit.sbom.rest;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +45,9 @@ public class ReportController {
         ReportRequestDTO dto = new ReportRequestDTO();
         dto.setCompact(compact);
         dto.setDcId(dcId);
-        dto.setSbom(json);
+        List<String> jsonList = new ArrayList<String>();
+        jsonList.add(json);
+        dto.setSbom(jsonList);
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -66,7 +70,7 @@ public class ReportController {
     @PostMapping("/remote")
     public void generateReportFromRemoteURI(HttpServletResponse response, @RequestBody ReportRequestDTO reportData) {
 
-        String json = loadCycloneDXData(reportData.getSbomURI());
+        List<String> json = loadCycloneDXData(reportData.getSbomURI());
         if(!json.equals("")) {
             reportData.setSbom(json);
             response.setContentType("application/pdf");
@@ -93,7 +97,8 @@ public class ReportController {
     @Operation(summary = "Generate Excel report based on CycloneDX definition provided as URI")
     @PostMapping("/excel/remote")
     public void generateExcel(HttpServletResponse response, @RequestBody ReportRequestDTO reportData) {
-        String json = loadCycloneDXData(reportData.getSbomURI());
+        
+        List<String> json = loadCycloneDXData(reportData.getSbomURI());
         if(!json.equals("")) {
             reportData.setSbom(json);
             response.setContentType("application/vnd.ms-excel");
@@ -116,17 +121,19 @@ public class ReportController {
         }
     }    
 
-    private String loadCycloneDXData(String sbomURI) {
-        
-        try {
-            ResponseEntity<String> response = restTemplate.getForEntity(sbomURI, String.class);
-            if (response.getStatusCode().is2xxSuccessful()) {
-                return response.getBody();
+    private List<String> loadCycloneDXData(List<String> sbomURI) {
+        List<String> sboms = new ArrayList<>();
+        for (String uri : sbomURI) {
+            try {
+                ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    sboms.add(response.getBody());
+                }
+            } catch (Exception e) {
+                log.error("Can't load CycloneDX data from remote URI " + uri + " " + e.getMessage());
+                log.error("Skipping sbom");
             }
-        } catch (Exception e) {
-            log.error("Can't load CycloneDX data from remote URI");
         }
-        
-        return "";
+        return sboms;
     }
 }

@@ -1,25 +1,19 @@
 package de.starwit.sbom.rest;
 
+import java.util.List;
+
 public class ReportRequestDTO {
-    private String sbomURI;
+    private List<String> sbomURI;
     private int dcId;
     private boolean compact;
-    private String sbom;
+    private List<String> sbom;
 
-    public String getSbomURI() {
-        return sbomURI;
-    }
-
-    public String getSbom() {
+    public List<String> getSbom() {
         return sbom;
     }
 
-    public void setSbom(String sbom) {
+    public void setSbom(List<String> sbom) {
         this.sbom = sbom;
-    }
-
-    public void setSbomURI(String sbomURI) {
-        this.sbomURI = sbomURI;
     }
 
     public int getDcId() {
@@ -36,5 +30,13 @@ public class ReportRequestDTO {
 
     public void setCompact(boolean compact) {
         this.compact = compact;
+    }
+
+    public List<String> getSbomURI() {
+        return sbomURI;
+    }
+
+    public void setSbomURI(List<String> sbomURI) {
+        this.sbomURI = sbomURI;
     }
 }
