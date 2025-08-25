@@ -20,8 +20,8 @@ Documentation for developers - pull requests are always appreciated.
 As this is a Spring Boot app, compiling and running is simple:
 
 ```bash
-    mvn clean package
-    java -jar target/application-sbom-generator.jar 
+mvn clean package
+java -jar target/application-sbom-generator.jar 
 ```
 
 __Note__: Build file contains a code signing step. Make sure to change config to your own signing key. For more details see [plugin page](https://maven.apache.org/plugins/maven-gpg-plugin/usage.html)
@@ -42,14 +42,13 @@ curl -X 'POST' 'http://localhost:8080/api/report/remote' -H 'Content-Type: appli
 This API call returns a binary PDF file which is then stored as _report.pdf_.
 
 ## Authentication
-In order to use authentication, you need a running openID compatible identity provider (IdP). TODO add Keycloak example.
+In order to use authentication, you need a running openID compatible identity provider (IdP). In folder [docker-compose](deployment/docker-compose/auth-docker-compose.yml) you find a Docker compose file, that starts a pre-configured Keycloak running at http://localhost:8081/
 
 ### Manual API Access with Token Generation
-Get access token:
+If you use pre-configured Keycloak use the following command to get an access token. If you want to use another Keycloak, adapt command accordingly.
 ```bash
-curl -H application/x-www-form-urlencoded -d "realm=default" -d "client_id=clientid" -d "username=user" -d "password=password" -d "grant_type=password" "http://hostname/realms/realmname/protocol/openid-connect/token"
+curl -H application/x-www-form-urlencoded -d "realm=default" -d "client_id=aicockpit" -d "username=admin" -d "password=admin" -d "grant_type=password" "http://localhost:8081/auth/realms/aicockpit/protocol/openid-connect/token"
 ```
-
 __Hint:__ On bash you can use [jq](https://jqlang.org/) to structure JSON answers. Following image shows a sample answer.
 
 ![](doc/sample_token_answer.png)
