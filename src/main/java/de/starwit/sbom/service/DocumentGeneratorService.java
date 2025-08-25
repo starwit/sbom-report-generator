@@ -2,7 +2,6 @@ package de.starwit.sbom.service;
 
 import java.io.OutputStream;
 
-import org.cyclonedx.model.Bom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

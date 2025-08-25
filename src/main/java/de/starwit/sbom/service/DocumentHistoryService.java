@@ -12,24 +12,24 @@ import jakarta.annotation.PostConstruct;
 public class DocumentHistoryService {
 
     @Autowired
-    List<DocumentHistory> documentHistory;
+    List<DocumentHistory> documentHistoryList;
 
     @PostConstruct
     private void init() {
-        DocumentHistory dh =  new DocumentHistory();
-        dh.setCreationDate(new Date());
-        dh.setName("Test");
-        documentHistory.add(dh);
+        DocumentHistory documentHistory =  new DocumentHistory();
+        documentHistory.setCreationDate(new Date());
+        documentHistory.setName("Test");
+        documentHistoryList.add(documentHistory);
     }    
 
     public List<DocumentHistory> getDocumentHistory() {
-        return documentHistory;
+        return documentHistoryList;
     }
 
     public void addDocumentHistory(String name) {
-        DocumentHistory dh =  new DocumentHistory();
-        dh.setCreationDate(new Date());
-        dh.setName(name);
-        documentHistory.add(dh);        
+        DocumentHistory documentHistory =  new DocumentHistory();
+        documentHistory.setCreationDate(new Date());
+        documentHistory.setName(name);
+        documentHistoryList.add(documentHistory);        
     }    
 }

@@ -67,7 +67,9 @@ curl -X 'POST' -H "Authorization: Bearer $TOKEN"  'http://localhost:8080/api/rep
 # Contact & Contribution
 This project was partly funded by the government of the federal republic of Germany. It is part of a research project aiming to keep _humans in command_ and is organized by the Federal Ministry of Labour and Social Affairs.
 
-![BMAS](doc/BMAS_Logo.svg)
+The “KI-Cockpit” (AI Cockpit) project was funded by the Federal Ministry of Labor and Social Affairs.
+
+<img src="doc/foerderlogo.png" alt="BMAS Logo" style="width:33%; height:auto;">
 
 ## License
 
