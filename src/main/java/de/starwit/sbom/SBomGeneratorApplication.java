@@ -13,7 +13,9 @@ import org.springframework.web.context.annotation.ApplicationScope;
 import de.starwit.sbom.generator.DocumentDesignConfig;
 import de.starwit.sbom.service.DocumentHistory;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+        org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class })
 public class SBomGeneratorApplication {
 
 	public static void main(String[] args) {
