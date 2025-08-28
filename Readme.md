@@ -42,7 +42,14 @@ curl -X 'POST' 'http://localhost:8080/api/report/remote' -H 'Content-Type: appli
 This API call returns a binary PDF file which is then stored as _report.pdf_.
 
 ## Authentication
-In order to use authentication, you need a running openID compatible identity provider (IdP). In folder [docker-compose](deployment/docker-compose/auth-docker-compose.yml) you find a Docker compose file, that starts a pre-configured Keycloak running at http://localhost:8081/
+
+In order to use authentication, use sping profile "auth" in your application.properties:
+
+```bash
+spring.profiles.active=auth
+```
+
+You need a running openID compatible identity provider (IdP). In folder [deployment/docker-compose](deployment/docker-compose/auth-docker-compose.yml) you find a Docker compose file, that starts a pre-configured Keycloak running at http://localhost:8081/
 
 ### Manual API Access with Token Generation
 If you use pre-configured Keycloak use the following command to get an access token. If you want to use another Keycloak, adapt command accordingly.
