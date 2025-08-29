@@ -1,0 +1,43 @@
+name: aicockpit
+  
+services:
+  db-keycloak:
+    image: postgres:latest
+    restart: on-failure
+    environment:
+      POSTGRES_DB: 'keycloak'
+      POSTGRES_USER: 'keycloak'
+      POSTGRES_PASSWORD: 'keycloak'
+      PGDATA: /var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U keycloak'] 
+      interval: 5s
+      timeout: 60s
+      retries: 30
+    volumes:
+      - keycloak-db:/var/lib/postgresql/data
+
+  urbalytix-keycloak:
+    image: docker.io/bitnami/keycloak:latest
+    depends_on:
+      db-keycloak:
+        condition: service_healthy
+    restart: on-failure
+    environment:
+      KEYCLOAK_DATABASE_HOST: db-keycloak
+      KEYCLOAK_DATABASE_PORT: 5432
+      KEYCLOAK_DATABASE_NAME: keycloak
+      KEYCLOAK_DATABASE_USER: keycloak
+      KEYCLOAK_DATABASE_PASSWORD: keycloak
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KEYCLOAK_HTTP_RELATIVE_PATH: /auth/
+      KEYCLOAK_EXTRA_ARGS: --import-realm
+    ports:
+      - '8081:8080'
+    volumes:
+      - ./keycloak/imports:/opt/bitnami/keycloak/data/import
+
+volumes:
+  keycloak-db:
+

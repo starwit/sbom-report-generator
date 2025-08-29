@@ -36,7 +36,20 @@ spec:
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: {{ .Values.app.context_path | quote }}
             - name: SERVER_PORT
-              value: {{ .Values.service.port | quote }}             
+              value: {{ .Values.service.port | quote }} 
+            {{- if .Values.auth.enabled }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: auth
+            - name: SPRING_SECURITY.OAUTH2.RESOURCESERVER.JWT.JWK_SET_URI
+              value: {{ .Values.auth.jwt_jwk_set_uri }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI
+              value: {{ .Values.auth.jwt_issuer_uri }}
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
+              value: {{ .Values.auth.keycloak_issuer_uri }}
+            {{- else }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: default
+            {{- end }}                        
             {{- with .Values.extraEnv }}
             {{- tpl . $ | nindent 12 }}
             {{- end }}

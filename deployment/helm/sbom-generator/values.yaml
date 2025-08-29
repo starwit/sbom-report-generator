@@ -9,6 +9,12 @@ image:
 app:
   context_path: ""
 
+auth:
+  enabled: false
+  jwt_jwk_set_uri: "http://hostname/realms/realmname/protocol/openid-connect/certs" # sets spring.security.oauth2.resourceserver.jwt.jwk-set-uri
+  jwt_issuer_uri: "http://hostname/realms/realmname" # sets spring.security.oauth2.resourceserver.jwt.issuer-uri
+  keycloak_issuer_uri: "http://hostname/realms/realmname" # sets spring.security.oauth2.client.provider.keycloak.issuer-uri
+
 service:
   port: 8080
 
